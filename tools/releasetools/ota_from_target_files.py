@@ -481,23 +481,8 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     script.Comment("Stage 3/3")
 
   # Dump fingerprints
-  script.Print("Target: %s" % target_fp)
-
-  script.AppendExtra("ifelse(is_mounted(\"/system\"), unmount(\"/system\"));")
-  device_specific.FullOTA_InstallBegin()
-
-  CopyInstallTools(output_zip)
-  script.UnpackPackageDir("install", "/tmp/install")
-  script.SetPermissionsRecursive("/tmp/install", 0, 0, 0755, 0644, None, None)
-  script.SetPermissionsRecursive("/tmp/install/bin", 0, 0, 0755, 0755, None, None)
-
-  if OPTIONS.backuptool:
-    script.Mount("/system")
-    script.RunBackup("backup")
-    script.Unmount("/system")
-
-  system_progress = 0.75
-
+  #script.Print("Target: %s" % CalculateFingerprint(
+  #    oem_props, oem_dict, OPTIONS.info_dict))
   script.Print("")
   script.Print("               Dive Deep Into...             ")
   script.Print(" .--.                          _  .--.  .--. ")
@@ -512,6 +497,20 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Print("_,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,_")
   script.Print(".,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.")
   script.Print("")
+  script.AppendExtra("ifelse(is_mounted(\"/system\"), unmount(\"/system\"));")
+  device_specific.FullOTA_InstallBegin()
+
+  CopyInstallTools(output_zip)
+  script.UnpackPackageDir("install", "/tmp/install")
+  script.SetPermissionsRecursive("/tmp/install", 0, 0, 0755, 0644, None, None)
+  script.SetPermissionsRecursive("/tmp/install/bin", 0, 0, 0755, 0755, None, None)
+
+  if OPTIONS.backuptool:
+    script.Mount("/system")
+    script.RunBackup("backup")
+    script.Unmount("/system")
+
+  system_progress = 0.75
 
   if OPTIONS.wipe_user_data:
     system_progress -= 0.1
@@ -555,6 +554,9 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     script.Mount("/system")
     script.RunBackup("restore")
     script.Unmount("/system")
+
+  script.Print(" ")
+  script.Print("Flashing Kernel..")
 
   script.ShowProgress(0.05, 5)
   script.WriteRawImage("/boot", "boot.img")
