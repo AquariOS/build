@@ -1848,6 +1848,12 @@ RECOVERYIMAGE_ID_FILE := $(PRODUCT_OUT)/recovery.id
 
 # $(1): output file
 define build-recoveryimage-target
+  # Changelog
+  $(hide) ./vendor/aquarios/tools/changelog
+  $(hide) mv $(PRODUCT_OUT)/Changelog.txt $(PRODUCT_OUT)/$(AQUARIOS_VERSION).txt
+  @echo -e ${00ffd7}" "${CL_RST}
+  @echo -e ${00d7ff}"     🐙 🐟 🐠 🐬 🐡 🐙 🐳 ~ GENERATING CHANGELOG ~ 🐳 🐙 🐡 🐬 🐠 🐟 🐙"${CL_RST}
+  @echo -e ${00ffd7}" "${CL_RST}
   # Making recovery image
   $(hide) mkdir -p $(TARGET_RECOVERY_OUT)
   $(hide) mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/sdcard $(TARGET_RECOVERY_ROOT_OUT)/tmp
