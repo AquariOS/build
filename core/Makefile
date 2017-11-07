@@ -2781,7 +2781,7 @@ AQUARIOS_TARGET_PACKAGE := $(PRODUCT_OUT)/$(AQUARIOS_VERSION).zip
 .PHONY: otapackage bacon aquarios
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 bacon: otapackage
-	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(AQUARIOS_TARGET_PACKAGE)
+	$(hide) mv $(INTERNAL_OTA_PACKAGE_TARGET) $(AQUARIOS_TARGET_PACKAGE)
 	$(hide) $(MD5SUM) $(AQUARIOS_TARGET_PACKAGE) > $(AQUARIOS_TARGET_PACKAGE).md5sum
 	@echo -e ""
 	@echo -e ""
@@ -2834,7 +2834,6 @@ bacon: otapackage
 	@echo -e ""
 	@echo -e ${CL_BWT}"Package Complete: $(AQUARIOS_TARGET_PACKAGE)"${CL_RST}
 	@echo -e "SIZE:"${CL_CYN}" `ls -la --si $(AQUARIOS_TARGET_PACKAGE) | cut -d ' ' -f 5`"${CL_RST}
-
 
 endif    # build_ota_package
 
