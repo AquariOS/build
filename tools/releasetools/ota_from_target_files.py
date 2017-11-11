@@ -483,6 +483,11 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   # Dump fingerprints
   #script.Print("Target: %s" % CalculateFingerprint(
   #    oem_props, oem_dict, OPTIONS.info_dict))
+
+  device = GetBuildProp("ro.product.device", OPTIONS.info_dict)
+  build_id = GetBuildProp("ro.build.id", OPTIONS.info_dict)
+  android_version = GetBuildProp("ro.build.version.release", OPTIONS.info_dict)
+
   script.Print("")
   script.Print("               Dive Deep Into...             ")
   script.Print(" .--.                          _  .--.  .--. ")
@@ -497,6 +502,9 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Print("_,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,_")
   script.Print(".,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.")
   script.Print("")
+  script.Print(" Android version: %s"%(android_version));
+  script.Print(" Build id: %s"%(build_id));
+  script.Print(" Device: %s"%(device));
   script.AppendExtra("ifelse(is_mounted(\"/system\"), unmount(\"/system\"));")
   device_specific.FullOTA_InstallBegin()
 
