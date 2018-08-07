@@ -691,16 +691,14 @@ function lunch()
         # if we can't find the product, try to grab it from our github
         T=$(gettop)
         pushd $T > /dev/null
-        vendor/aquarios/build/tools/roomservice.py $product
+        if [[ $NO_ROOMSERVICE == true ]]; then
+            echo "Roomservice turned off, type in 'export NO_ROOMSERVICE=false' if you want it back on"
+        else
+            vendor/aquarios/build/tools/roomservice.py $product
+        fi
         popd > /dev/null
         check_product $product
-    else
-        T=$(gettop)
-        pushd $T > /dev/null
-        vendor/aquarios/build/tools/roomservice.py $product true
-        popd > /dev/null
     fi
-    check_product $product
     TARGET_PRODUCT=$product \
     TARGET_BUILD_VARIANT=$variant \
     TARGET_PLATFORM_VERSION=$version \
