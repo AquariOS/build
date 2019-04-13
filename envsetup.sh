@@ -5,6 +5,7 @@ Run "m help" for help with the build system itself.
 
 Invoke ". build/envsetup.sh" from your shell to add the following functions to your environment:
 - lunch:     lunch <product_name>-<build_variant>
+- gerrit:    Adds a remote for AquariOS Gerrit
              Selects <product_name> as the product to build, and <build_variant> as the variant to
              build, and stores those selections in the environment to be read by subsequent
              invocations of 'm' etc.
@@ -1711,10 +1712,26 @@ function provision()
     "$ANDROID_PRODUCT_OUT/provision-device" "$@"
 }
 
-function repopick() {
+function repopick()
+{
     set_stuff_for_environment
     T=$(gettop)
     $T/vendor/aquarios/tools/repopick.py $@
+}
+
+function gerrit()
+{
+    if [ ! -d ".git" ]; then
+        echo -e "Please run this inside a git directory";
+    else
+        git remote rm gerrit 2>/dev/null;
+        [[ -z "${GERRIT_USER}" ]] && export GERRIT_USER=$(git config --get review.review.aquarios.net.username);
+        if [[ -z "${GERRIT_USER}" ]]; then
+            git remote add gerrit $(git remote -v | grep -i "github\.com\/AquariOS" | awk '{print $2}' | uniq | sed -e "s|.*github.com/AquariOS|ssh://review.aquarios.net:29418/AquariOS|");
+        else
+            git remote add gerrit $(git remote -v | grep -i "github\.com\/AquariOS" | awk '{print $2}' | uniq | sed -e "s|.*github.com/AquariOS|ssh://${GERRIT_USER}@review.aquarios.net:29418/AquariOS|");
+        fi
+    fi
 }
 
 function atest()
