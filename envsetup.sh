@@ -1,6 +1,7 @@
 
 export HMM_DESCRIPTIVE=(
 "lunch:   lunch <product_name>-<build_variant>"
+"gerrit:    Adds a remote for AquariOS Gerrit"
 "tapas:   tapas [<App1> <App2> ...] [arm|x86|mips|armv5|arm64|x86_64|mips64] [eng|userdebug|user]"
 "croot:   Changes directory to the top of the tree."
 "cout:    Changes directory to out."
@@ -1628,9 +1629,25 @@ function reposync() {
     esac
 }
 
-function repopick() {
+function repopick()
+{
     T=$(gettop)
     $T/vendor/aquarios/tools/repopick.py $@
+}
+
+function gerrit()
+{
+    if [ ! -d ".git" ]; then
+        echo -e "Please run this inside a git directory";
+    else
+        git remote rm gerrit 2>/dev/null;
+        [[ -z "${GERRIT_USER}" ]] && export GERRIT_USER=$(git config --get review.review.aquarios.net.username);
+        if [[ -z "${GERRIT_USER}" ]]; then
+            git remote add gerrit $(git remote -v | grep -i "github\.com\/AquariOS" | awk '{print $2}' | uniq | sed -e "s|.*github.com/AquariOS|ssh://review.aquarios.net:29418/AquariOS|");
+        else
+            git remote add gerrit $(git remote -v | grep -i "github\.com\/AquariOS" | awk '{print $2}' | uniq | sed -e "s|.*github.com/AquariOS|ssh://${GERRIT_USER}@review.aquarios.net:29418/AquariOS|");
+        fi
+    fi
 }
 
 function fixup_common_out_dir() {
