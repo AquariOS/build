@@ -3001,9 +3001,9 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) \
 
 AQUARIOS_TARGET_PACKAGE := $(PRODUCT_OUT)/AquariOS_$(TARGET_PRODUCT)-$(AQUARIOS_VERSION).zip
 
-.PHONY: otapackage bacon
+.PHONY: otapackage aquarios
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
-bacon: otapackage
+aquarios: otapackage
 	$(hide) mv $(INTERNAL_OTA_PACKAGE_TARGET) $(AQUARIOS_TARGET_PACKAGE)
 	$(hide) $(MD5SUM) $(CUSTOM_TARGET_PACKAGE) > $(AQUARIOS_TARGET_PACKAGE).md5sum
 	@echo -e "Package complete: $(AQUARIOS_TARGET_PACKAGE)"
