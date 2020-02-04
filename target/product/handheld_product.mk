@@ -44,3 +44,6 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES_DEBUG += \
     frameworks-base-overlays-debug
+
+SYSTEM_UI_PACKAGE := SystemUIGoogle
+PRODUCT_PACKAGES += $(SYSTEM_UI_PACKAGE)
