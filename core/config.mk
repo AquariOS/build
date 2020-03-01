@@ -1179,6 +1179,10 @@ endif
 DEFAULT_DATA_OUT_MODULES := ltp $(ltp_packages) $(kselftest_modules)
 .KATI_READONLY := DEFAULT_DATA_OUT_MODULES
 
+## We need to be sure the global selinux policies are included
+## last, to avoid accidental resetting by device configs
+$(eval include device/aquarios/sepolicy/common/sepolicy.mk)
+
 include $(BUILD_SYSTEM)/dumpvar.mk
 
 # QCOM targets and pathmap
